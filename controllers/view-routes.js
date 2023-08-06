@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
    
   res.render("home", {
     isHome: true,
-    isLoggedIn: req.session.user_id,
+    isLoggedIn: req.session.logged_in,
     profile_url: null
     
   });
@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
 
 // Show Login Page
 router.get("/login", (req, res) => {
-  if (req.session.user_id) return res.redirect("/dashboard");
+  if (req.session.logged_in) return res.redirect("/dashboard");
 
   res.render("login", {
     isLogin: true,

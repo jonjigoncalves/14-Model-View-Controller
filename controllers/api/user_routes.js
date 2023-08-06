@@ -2,51 +2,70 @@ const router = require('express').Router();
 const {User, Blog} = require('../../models');
 
 // Log in user
+// LH 3333/api/users/login
 router.post('/login', async (req, res) => {
     try {
       const formEmail = req.body.email;
       const formPassword = req.body.password;
-      console.log(req.body);
+
       const user = await User.findOne({
         where: {
           email: formEmail
         }
       });
-  
+      
       // If the user doesn't exist, redirect them to register
-      if (!user) return res.redirect('/register');
+      if (!user) { return res.json({
+        message: 'No User Found'
+      })}
   
       // Validate that the password is a match
-      const isValidPass = await user.validatePass(formPassword);
+      const isValidPass = await user.checkPassword(formPassword);
   
       console.log(isValidPass);
       if (!isValidPass) throw new Error('invalid_password');
       // User has been validated and now we log the user in by creating a session
-      req.session.user_id = user.id;
+      req.session.save(() => {
+        req.session.user_id = user.id;
+        req.session.logged_in = true;
+        req.session.username = user.name
   
-      res.redirect('/');
+        res.status(200).json(user);
+      });
+  
+      // res.redirect('/');
   
     } catch (err) {
-      if (err.message === 'invalid_password') {
-        res.redirect('/login');
-      }
+      console.log(err);
+      // if (err.message === 'invalid_password') {
+      //   res.redirect('/login');
+      // }
     }
   });
   
   // Register User
   router.post('/register', async (req, res) => {
+    console.log(req.body);
     try {
-      const newUser = await User.create(req.body);
+      
+      const user = await User.create(req.body);
   
       // Creates a session and sends a cookie to the client
-      req.session.user_id = newUser.id;
+      req.session.save(() => {
+        req.session.user_id = user.id;
+        req.session.logged_in = true;
+        req.session.username = user.name
   
-      res.redirect('/');
+        res.status(200).json(user);
+      });
+  
+      // res.redirect('/');
     } catch (err) {
-      const dupeEmail = err.errors.find(e => e.path === 'email');
+      console.log(err);
+      // const dupeEmail = err.errors.find(e => e.path === 'email');
   
-      // If email already exists, redirect to the login page
-      if (dupeEmail) res.redirect('/login');
+      // // If email already exists, redirect to the login page
+      // if (dupeEmail) res.redirect('/login');
     }
   });
   
