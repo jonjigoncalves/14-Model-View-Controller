@@ -65,7 +65,9 @@
               {{user.email}}
             </h3>
             <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-              <h2>Welcome, {{user.name}}!</h2>
+              {{#if email}}
+                <p>Welcome, {{email}}</p>
+                {{/if}}
             </div>
 
           </div>
@@ -79,15 +81,15 @@
 </div>
 
 <section class="p-6 text-gray-100">
-	<form novalidate="" class=" login-form container w-full max-w-xl p-8 mx-auto space-y-6 rounded-md shadow bg-gray-900">
+	<form action="/blog" method="POST" novalidate="" class="container w-full max-w-xl p-8 mx-auto space-y-6 rounded-md shadow bg-gray-900">
 		<h2 class="w-full text-3xl font-bold leadi">Enter New Blog Here</h2>
 		<div>
 			<label for="name" class=" custom-field block mb-1 ml-1">New Title</label>
-			<input id="blog-name" type="text" placeholder="Your name" required="" class="form-control block w-full p-2 rounded focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black">
+			<input name="title" type="text" placeholder="Title" required="" class="form-control block w-full p-2 rounded focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black">
 		</div>
 		<div>
 			<label for="message" class="block mb-1 ml-1 custom-field">Enter Content</label>
-			<textarea id="blog-content" type="text" placeholder="Message..." class="form-control block w-full p-2 rounded autoexpand focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black"></textarea>
+			<textarea name="text" id="text" type="text" placeholder="Message..." class="form-control block w-full p-2 rounded autoexpand focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black"></textarea>
 		</div>
 		<div>
 			<button type="submit" class="blog-btn w-full px-4 py-2 font-bold rounded shadow focus:outline-none focus:ring hover:ring focus:ri bg-blue-400 focus:ri hover:ri text-gray-900">Create Blog</button>
@@ -95,36 +97,21 @@
 	</form>
 </section>
 
-{{#each blogs as |blog|}}
-  <div class="blog-card">
-    <div class="blog-container">
-      <div class="blog-header">
-        <h1>{{blog.title}}</h1>
-      </div>
-      <div class="blog-content">
-        <p>{{blog.content}}</p>
-      </div>
-      <p class="blog-date">{{format_date createdAt}}</p>
-      <button type="button" data-id="{{blog.id}}" class="btn btn-primary custom-btn blog-delete">delete</button>
-      <button type="button" data-id="{{blog.id}}" class="btn btn-primary custom-btn blog-update">update</button>
-      <div>
-        <form id="update-form{{blog.id}}" class="hidden">
-          <div class="form-group">
-            <label class="custom-field">Title</label>
-            <input id="blog-title{{blog.id}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="custom-field">Content</label>
-            <input id="blog-content{{blog.id}}" type="text" class="form-control">
-          </div>
-          <button type="button" data-id="{{blog.id}}" id="saveBtn" class="btn btn-primary custom-btn">save</button>
-        </form>
-      </div>
+<div class="blogs">
+  {{#each blogs}}
+    <div class="blog">
+      <h2>{{title}}</h2>
+      <p>{{text}}</p>
+     <a href="/edit/{{id}}"><p>Edit</p></a>
+     <button data-blog-id="{{id}}" class="remove-button">Delete</button>
+     <p class="createdAt">{{createdAt}}</p>
     </div>
-  </div>
-{{/each}}
+  {{/each}}
+</main>
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="/js/dashboard.js"></script>
+<script src="/js/update.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

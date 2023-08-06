@@ -6,7 +6,13 @@ const session = require("express-session");
 // Import our db connection
 const db = require("./config/connection");
 
-const routes = require('./controllers')
+// Import routes
+const api_routes = require('./controllers/api_routes');
+const view_routes = require('./controllers/view-routes');
+const user_routes = require('./controllers/user_routes');
+const blog_routes = require('./controllers/blog_routes');
+
+
 const app = express();
 const PORT = process.env.PORT || 3333;
 
@@ -37,7 +43,7 @@ app.use(
   })
 );
 
-app.use(routes);
+app.use('/', [api_routes, view_routes, user_routes, blog_routes]);
 
 db.sync({ force: false })
   .then(() => {

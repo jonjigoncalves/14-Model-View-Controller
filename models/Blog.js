@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize  = require('../config/connection');
+const db  = require('../config/connection');
 const User = require('./User')
 // bring in the user model so that we can create the association
 
@@ -16,7 +16,7 @@ Blog.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  content: {
+  text: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
@@ -33,11 +33,11 @@ Blog.init({
   
   },
 }, {
-  sequelize,
+  sequelize: db,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'blog',
+    modelName: 'Blog',
 });
 
 module.exports = Blog;

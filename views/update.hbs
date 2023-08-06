@@ -1,0 +1,19 @@
+<section class="p-6 text-gray-100">
+	<form action="/edit/{{blog.blogId}}" method="POST" id="editForm" novalidate="" class="container w-full max-w-xl p-8 mx-auto space-y-6 rounded-md shadow bg-gray-900">
+		<h2 class="w-full text-3xl font-bold leadi">Update Blog Below</h2>
+		<div>
+			<label for="name" class=" custom-field block mb-1 ml-1">New Title</label>
+             <input type="hidden" name="_method" value="PUT">
+			<input name="title" id="title" type="text" placeholder="Title" required="" value="{{blog.title}}" class="form-control block w-full p-2 rounded focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black">
+		</div>
+		<div>
+			<label for="message" class="block mb-1 ml-1 custom-field">Enter Content</label>
+			<textarea name="text" id="text" type="text" placeholder="Message..." class="form-control block w-full p-2 rounded autoexpand focus:outline-none focus:ring focus:ri focus:ri bg-gray-800 text-black">{{blog.text}}</textarea>
+		</div>
+		<div>
+			<button id="submitBtn" type="submit" class="blog-btn w-full px-4 py-2 font-bold rounded shadow focus:outline-none focus:ring hover:ring focus:ri bg-blue-400 focus:ri hover:ri text-gray-900">Create Blog</button>
+		</div>
+	</form>
+</section>
+
+<script src="/js/update.js"></script>

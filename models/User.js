@@ -1,12 +1,12 @@
-const sequelize = require('../config/connection');
+const db = require('../config/connection');
 const { Model, DataTypes } = require('sequelize');
 // bcrupt to hash the password
-const bcrypt = require('bcrypt');
+const { hash, compare } = require("bcrypt");
+const Blog =require('./Blog')
+
 
 class User extends Model {
-  checkPassword(loginPw) {
-    return bcrypt.compareSync(loginPw, this.password);
-  }
+  
 }
 
 User.init({
@@ -32,26 +32,28 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [6],
+      len: [8],
     },
   }
 }, {
+  sequelize: db,
+  modelName: "user",
   hooks: {
     async beforeCreate(user) {
-      const hashPassword = await bcrypt.hash(user.password, 10);
+      const hashPassword = await hash(user.password, 10);
       user.password = hashPassword;
     },
-    beforeUpdate: async (updatedUserData) => {
-      updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
-      return updatedUserData;
-    },
   },
-  sequelize,
-  timestamps: false,
-  freezeTableName: true,
-  underscored: true,
-  modelName: 'user',
-});
+}
+);
 
+User.prototype.validatePass = async function (formPassword) {
+const isValid = await compare(formPassword, this.password);
+
+return isValid;
+};
+
+User.hasMany(Blog);
+Blog.belongsTo(User);
 
 module.exports = User;

@@ -15,7 +15,7 @@
 <body>
   <nav class="bg-white shadow dark:bg-gray-800">
     <div class="container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300">
-        <a href="/" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 ">home</a>
+        <a href="/" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 {{#if isHome}}active{{/if}}">home</a>
 
        {{#if isLoggedIn}}
         <a href="/dashboard" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6">Dashboard</a>
@@ -23,9 +23,9 @@
         <a href="/logout" id="logoutButton" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6" aria-current="page">Logout</a>
 
         {{else}}
-        <a href="/login" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6">Login</a>
+        <a href="/login" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 {{#if isLogin}}active{{/if}}">Login</a>
 
-        <a href="/register" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6">Register</a>
+        <a href="/register" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 {{#if isRegister}}active{{/if}}">Register</a>
         
         
      {{/if}}
