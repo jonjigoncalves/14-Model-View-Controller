@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize  = require('../config/connection');
+const User = require('./User')
 // bring in the user model so that we can create the association
 
 
@@ -26,7 +27,7 @@ Blog.init({
   user_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "user",
+      model: User,
       key: 'id'
     }
   

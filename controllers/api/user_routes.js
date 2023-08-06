@@ -17,6 +17,7 @@ router.post('/login', async (req, res) => {
       // If the user doesn't exist, redirect them to register
       if (!user) { return res.json({
         message: 'No User Found'
+        
       })}
   
       // Validate that the password is a match
@@ -33,7 +34,7 @@ router.post('/login', async (req, res) => {
         res.status(200).json(user);
       });
   
-      // res.redirect('/');
+      
   
     } catch (err) {
       console.log(err);

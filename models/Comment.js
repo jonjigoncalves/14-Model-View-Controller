@@ -1,5 +1,7 @@
 const sequelize = require('../config/connection');
 const { Model, DataTypes } = require('sequelize');
+const Blog = require('./Blog')
+const User = require('./User')
 
 
 
@@ -25,7 +27,7 @@ Comment.init({
   user_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "user",
+      model: User,
       key: 'id'
     }
 
@@ -33,7 +35,7 @@ Comment.init({
   blog_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "blog",
+      model: Blog,
       key: 'id'
     }
   },

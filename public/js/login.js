@@ -10,7 +10,7 @@ loginForm.addEventListener('submit', async function (event) {
 
     const email = emailInput.value;
     const password = passwordInput.value;
-    console.log(email, password);
+    console.log(email);
 
     const credentials = {
         email: email,

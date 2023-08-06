@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Blog = require("../models/Blog");
 
 function isAuthenticated(req, res, next) {
   const isAuthenticated = req.session.user_id;
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
 
    
   res.render("home", {
-    isHome: true,
+    
     isLoggedIn: req.session.logged_in,
     profile_url: null
     
@@ -44,6 +45,7 @@ router.get("/register", (req, res) => {
 // Show Dashboard Page
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   const user = await User.findByPk(req.session.user_id, {
+    isDashboard: true,
    
   });
 
