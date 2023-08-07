@@ -33,13 +33,14 @@ router.get("/login", (req, res) => {
   if (req.session.logged_in) return res.redirect("/dashboard");
 
   res.render("login", {
-    isLogin: true,
+    isLoggedIn: req.session.logged_in,
+    // isLogin: true,
   });
 });
 
 // Show Register Page
 router.get("/register", (req, res) => {
-  if (req.session.user_id) return res.redirect("/dashboard");
+  if (req.session.logged_in) return res.redirect("/dashboard");
 
   res.render("register", {
     isRegister: true,
@@ -47,6 +48,7 @@ router.get("/register", (req, res) => {
 });
 
 // Show Dashboard Page
+//comeback and look at value of isdashbaord: true
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   const user = await User.findByPk(req.session.user_id, {
     isDashboard: true,
@@ -67,14 +69,14 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 
 
 
-// Show login page
-router.get("/login", (req, res) => {
-    if (req.session.user_id) return res.redirect("/dashboard");
+// // Show login page
+// router.get("/login", (req, res) => {
+//     if (req.session.user_id) return res.redirect("/dashboard");
   
-    res.render("login", {
-      isLogin: true,
-    });
-  });
+//     res.render("login", {
+//       isLogin: true,
+//     });
+//   });
 
   router.get("/welcome", (req, res) => {
     res.render("welcome");
@@ -84,9 +86,9 @@ router.get("/login", (req, res) => {
   
     res.redirect('/')
   })
-  router.get("*", (req, res) => {
-    res.render("404");
-  });
+  // router.get("*", (req, res) => {
+  //   res.render("404");
+  // });
 
   router.get('/blog/:id', async (req, res) => {
     try {
@@ -117,43 +119,61 @@ router.get("/login", (req, res) => {
     }
   });
 
-  router.put('/edit/:id', async (req, res) => {
+  router.get('/edit/:id', async (req, res) => {
     try {
-        const blogId = req.params.id;
-        const { title, text } = req.body;
+      const oldPost = await Blog.findByPk(req.params.id, {
+        include: User,
 
-        console.log('Blog ID:', blogId);
-        console.log('New Title:', title);
-        console.log('New Text:', text);
+      })
+     
 
-        // Check if the blog with the given ID exists
-        const blog = await Blog.findByPk(blogId);
-        if (!blog) {
-            console.log('Blog not found');
-            return res.json('Blog not found');
-        }
-
-        // Update the blog's properties with the new data
-        blog.title = title;
-        blog.text = text;
-
-        // Save the updated blog
-        await blog.save();
-
-        console.log('Blog updated successfully');
-
-        // Send the updated blog data as a response in JSON format
-        res.json({
-            id: blog.id,
-            title: blog.title,
-            text: blog.text,
-            createdAt: blog.createdAt,
-        });
-    } catch (err) {
-        // Handle any errors that occurred during the process
-        console.error('Error updating blog:', err);
-        res.json('Server Error');
+      const blog = oldPost.get({
+        plain: true
+      });
+      console.log(blog);
+      res.render('update', {
+        ...blog, 
+        logged_in: req.session.logged_in
+      })
+    } catch (error) {
+      console.log(error);
     }
+    // try {
+    //     const blogId = req.params.id;
+    //     const { title, text } = req.body;
+
+    //     console.log('Blog ID:', blogId);
+    //     console.log('New Title:', title);
+    //     console.log('New Text:', text);
+
+    //     // Check if the blog with the given ID exists
+    //     const blog = await Blog.findByPk(blogId);
+    //     if (!blog) {
+    //         console.log('Blog not found');
+    //         return res.json('Blog not found');
+    //     }
+
+    //     // Update the blog's properties with the new data
+    //     blog.title = title;
+    //     blog.text = text;
+
+    //     // Save the updated blog
+    //     await blog.save();
+
+    //     console.log('Blog updated successfully');
+
+    //     // Send the updated blog data as a response in JSON format
+    //     res.json({
+    //         id: blog.id,
+    //         title: blog.title,
+    //         text: blog.text,
+    //         createdAt: blog.createdAt,
+    //     });
+    // } catch (err) {
+    //     // Handle any errors that occurred during the process
+    //     console.error('Error updating blog:', err);
+    //     res.json('Server Error');
+    // }
 });
 
 
