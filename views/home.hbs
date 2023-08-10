@@ -22,15 +22,14 @@
 </div>
 </div>
 
-<h1>See What Others Are Thinking</h1>
-<!-- Output each user's email address, using a handlebars each loop -->
-<div class="blogs">
+
+
+<ul>
   {{#each blogs}}
-    <div class="blog">
+    <li>
       <h2>{{title}}</h2>
       <p>{{text}}</p>
-     <a href="/edit/{{id}}"><p>Edit</p></a>
-     <button data-blog-id="{{id}}" class="remove-button">Delete</button>
-     <p class="createdAt">{{createdAt}}</p>
-    </div>
+      <p>By: {{user.email}}</p>
+    </li>
   {{/each}}
+</ul>
